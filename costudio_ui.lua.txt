@@ -1,0 +1,141 @@
+local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
+
+local LOADER = 'loadstring(game:HttpGet("https://costudio-k951.arcada.app/costudio"))()'
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "CoStudio"
+gui.ResetOnSpawn = false
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+gui.DisplayOrder = 999
+gui.Parent = (gethui and gethui()) or CoreGui
+
+local main = Instance.new("Frame")
+main.Size = UDim2.fromOffset(340, 178)
+main.Position = UDim2.new(0.5, 0, 0.5, 24)
+main.AnchorPoint = Vector2.new(0.5, 0.5)
+main.BackgroundColor3 = Color3.fromRGB(23, 23, 28)
+main.BorderSizePixel = 0
+main.Parent = gui
+
+local mainCorner = Instance.new("UICorner")
+mainCorner.CornerRadius = UDim.new(0, 10)
+mainCorner.Parent = main
+
+local mainStroke = Instance.new("UIStroke")
+mainStroke.Color = Color3.fromRGB(44, 44, 54)
+mainStroke.Thickness = 1
+mainStroke.Parent = main
+
+local accent = Instance.new("Frame")
+accent.Size = UDim2.new(1, 0, 0, 3)
+accent.BackgroundColor3 = Color3.fromRGB(124, 140, 246)
+accent.BorderSizePixel = 0
+accent.Parent = main
+
+local title = Instance.new("TextLabel")
+title.Text = "CoStudio"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 20
+title.TextColor3 = Color3.fromRGB(245, 245, 248)
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.BackgroundTransparency = 1
+title.Position = UDim2.fromOffset(16, 14)
+title.Size = UDim2.fromOffset(240, 24)
+title.Parent = main
+
+local close = Instance.new("TextButton")
+close.Text = "x"
+close.Font = Enum.Font.GothamBold
+close.TextSize = 15
+close.TextColor3 = Color3.fromRGB(190, 190, 198)
+close.BackgroundColor3 = Color3.fromRGB(36, 36, 44)
+close.BorderSizePixel = 0
+close.Position = UDim2.new(1, -44, 0, 12)
+close.Size = UDim2.fromOffset(28, 28)
+close.Parent = main
+
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(0, 8)
+closeCorner.Parent = close
+
+local desc = Instance.new("TextLabel")
+desc.Text = "CoStudio has switched loaders, this is the old loader please execute the new loader by pressing execute or copy the new loader to save."
+desc.Font = Enum.Font.Gotham
+desc.TextSize = 13
+desc.TextColor3 = Color3.fromRGB(168, 168, 178)
+desc.TextWrapped = true
+desc.TextXAlignment = Enum.TextXAlignment.Left
+desc.TextYAlignment = Enum.TextYAlignment.Top
+desc.BackgroundTransparency = 1
+desc.Position = UDim2.fromOffset(16, 48)
+desc.Size = UDim2.new(1, -32, 0, 64)
+desc.Parent = main
+
+local executeBtn = Instance.new("TextButton")
+executeBtn.Text = "Execute"
+executeBtn.Font = Enum.Font.GothamMedium
+executeBtn.TextSize = 14
+executeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+executeBtn.BackgroundColor3 = Color3.fromRGB(124, 140, 246)
+executeBtn.BorderSizePixel = 0
+executeBtn.Position = UDim2.fromOffset(16, 128)
+executeBtn.Size = UDim2.fromOffset(150, 34)
+executeBtn.Parent = main
+
+local executeCorner = Instance.new("UICorner")
+executeCorner.CornerRadius = UDim.new(0, 8)
+executeCorner.Parent = executeBtn
+
+local copyBtn = Instance.new("TextButton")
+copyBtn.Text = "Copy"
+copyBtn.Font = Enum.Font.GothamMedium
+copyBtn.TextSize = 14
+copyBtn.TextColor3 = Color3.fromRGB(222, 222, 230)
+copyBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 43)
+copyBtn.BorderSizePixel = 0
+copyBtn.Position = UDim2.fromOffset(174, 128)
+copyBtn.Size = UDim2.fromOffset(150, 34)
+copyBtn.Parent = main
+
+local copyCorner = Instance.new("UICorner")
+copyCorner.CornerRadius = UDim.new(0, 8)
+copyCorner.Parent = copyBtn
+
+local copyStroke = Instance.new("UIStroke")
+copyStroke.Color = Color3.fromRGB(58, 58, 70)
+copyStroke.Thickness = 1
+copyStroke.Parent = copyBtn
+
+local function bindHover(button, base, hover)
+	button.MouseEnter:Connect(function()
+		TweenService:Create(button, TweenInfo.new(0.15), {BackgroundColor3 = hover}):Play()
+	end)
+	button.MouseLeave:Connect(function()
+		TweenService:Create(button, TweenInfo.new(0.15), {BackgroundColor3 = base}):Play()
+	end)
+end
+
+bindHover(executeBtn, Color3.fromRGB(124, 140, 246), Color3.fromRGB(142, 156, 255))
+bindHover(copyBtn, Color3.fromRGB(35, 35, 43), Color3.fromRGB(46, 46, 56))
+bindHover(close, Color3.fromRGB(36, 36, 44), Color3.fromRGB(52, 52, 62))
+
+executeBtn.MouseButton1Click:Connect(function()
+	loadstring(game:HttpGet("https://costudio-k951.arcada.app/costudio"))()
+end)
+
+copyBtn.MouseButton1Click:Connect(function()
+	if setclipboard then
+		setclipboard(LOADER)
+	elseif toclipboard then
+		toclipboard(LOADER)
+	end
+end)
+
+close.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
+
+TweenService:Create(main, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+	Position = UDim2.new(0.5, 0, 0.5, 0)
+}):Play()
